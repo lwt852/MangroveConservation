@@ -1,0 +1,119 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# <center>  Link public perception with mangrove conservation and deforestation: a social media analysis </center>\n",
+    "\n",
+    "<center>By \"Mimi Gong\"</center>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The software logo is as below:\n",
+    "\n",
+    "<img src=\"https://farm3.staticflickr.com/2884/34157488105_2819bc83ee_o.jpg\" width=\"20%\">\n",
+    "<p style=\"text-align: right;\">Image from: http://www.grida.no/resources/8698</p>\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "# Overview\n",
+    "\n",
+    "Mangrove forest, which has provided multiple ecosystem services to human beings such as economic incentives, coastal resilience and high carbon storage((Richards & Friess, 2016), is a significant type of ecosystem. It has been negatively affected by markets as international demand for commodities increase such as palm oil, farmed fish and agriculture cultivation from remote-sensing images during the past two decades. Government and Nongovernmental organization have started mangrove conservation for years. However, no matter how strong and how many strategies are implemented, the tendency of mangrove biodiversity loss has never stopped (Game et al.2014). Therefore, it has been key questions on how to identify and foster more sustainable modes of land-use that can maintain food production and achieve accessibility goals for the society’s food security while conserving the nature and secure lives for the non-human part of the world in an equitable and justice manner.\n",
+    "\n",
+    "\n",
+    "Local land-use decisions are increasingly caused by and moderated through capital flows, markets, information flows and other distant actors (Liu et al. 2013). As regions become more interconnected, we should identify effective strategies for balancing the challenge of resource use and conservation, which always plays out locally but are increasingly linked to distal causes. This approach to view conservation problem is important in mangrove case because mangrove conservation efforts starts from the push for biodiversity conservation led by international organizations from external sources. These movements happen with the increasing perceptual acknowledgement of the significance of mangrove forest on providing various ecosystem services (Fairhead et al. 2012) to human beings. Therefore, it would be interesting to see how different ideologies in mangrove conservation are flowing between systems. Our key questions of this research are as below, a) What’s the values/perceptions in mangrove conservations?  b) How people’s values are changing along with time? c) Does that align with government/non-government policy and actions and turn into conservation success? \n",
+    "\n",
+    "References:\n",
+    "\n",
+    "Dietz, T. (2013). Bringing values and deliberation to science communication. Proceedings of the National Academy of Sciences, 110(Supplement_3), 14081–14087. https://doi.org/10.1073/pnas.1212740110\n",
+    "Friess, D. A. (2016). Ecosystem Services and Disservices of Mangrove Forests: Insights from Historical Colonial Observations. Forests, 7(9), 183. https://doi.org/10.3390/f7090183\n",
+    "Friess, D. A., Rogers, K., Lovelock, C. E., Krauss, K. W., Hamilton, S. E., Lee, S. Y., Lucas, R., Primavera, J., Rajkaran, A., & Shi, S. (2019). The State of the World’s Mangrove Forests: Past, Present, and Future. Annual Review of Environment and Resources, 44(1), null. https://doi.org/10.1146/annurev-environ-101718-033302\n",
+    "Friess, D. A., Thompson, B. S., Brown, B., Amir, A. A., Cameron, C., Koldewey, H. J., Sasmito, S. D., & Sidik, F. (2016). Policy challenges and approaches for the conservation of mangrove forests in Southeast Asia. Conservation Biology, 30(5), 933–949. https://doi.org/10.1111/cobi.12784\n",
+    "Friis, C. (2019). Telecoupling. Springer Berlin Heidelberg.\n",
+    "Liu, J., Hull, V., Batistella, M., DeFries, R., Dietz, T., Fu, F., Hertel, T., Izaurralde, R. C., Lambin, E., Li, S., Martinelli, L., McConnell, W., Moran, E., Naylor, R., Ouyang, Z., Polenske, K., Reenberg, A., de Miranda Rocha, G., Simmons, C., … Zhu, C. (2013). Framing Sustainability in a Telecoupled World. Ecology and Society, 18(2). https://doi.org/10.5751/ES-05873-180226\n",
+    "Richards, D. R., & Friess, D. A. (2016). Rates and drivers of mangrove deforestation in Southeast Asia, 2000–2012. Proceedings of the National Academy of Sciences, 113(2), 344–349. https://doi.org/10.1073/pnas.1510272113\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "# Program Description\n",
+    "\n",
+    "China has gone further than any other country in its environmental stewardship, largely due to its huge environmental damage resulting from the rapid economic and infrastructure growth. In the face of deepening environmental crisis, China has become innovative in its conservation science and policies and has implemented them on a breathtaking scale. In addition, the booming usage of Weibo, a Chinese version of twitter, has immersed into all Chinese daily lives, including government agencies and non-governmental organizations. Weibo has become a platform for authorities to announce their policies and norms, and in return, Weibo is also an important pathway for the government to collect public opinions on their policies. In the case of mangrove conservation, China has gone from devastating mangrove deforestation to restoration, and currently, China is one of few mangrove holding countries without mangrove deforestation. \n",
+    "\n",
+    "Therefore, this study will use China as a pilot site to investigate the linkage between public’s perception and mangrove conservation efforts. In response the key questions above, this study has three parts. \n",
+    "\n",
+    "1.\tCollect Weibo’s data related to “mangrove ecosystem” and other similar terms for the past ten years. \n",
+    "2.\tConduct analysis on the collected dataset. The analysis include:\n",
+    "a)\tDistinguish different attitudes of the ideologies to represent mangrove conservation and deforestation\n",
+    "b)\tIdentify the key ideologies of mangrove conservation and keywords related to mangrove deforestation in China\n",
+    "c)\tExplore how these attitudes and ideologies are changing along with time.\n",
+    "3.\tLink these ideologies related to mangrove ecosystem with real-world mangrove deforestation data, and test the relationship between public perception and mangrove coverage. \n",
+    "\n",
+    "\n",
+    "Similar to Twitter API, Weibo has its own API for users to web-scrap their dataset. The functions include fetch data by certain keywords. I have found some code from Github and will deploy it in mangrove case.\n",
+    "Once we collect the dataset, we will use sentiment analysis to conduct contextual mining of text to identify and extract subjective information in our dataset, such as differentiate the attitudes in the text, summarize key words in the attitudes, and  explore how these attitudes and ideologies are changing along with time. With the recent advances in deep learning, many software can achieve the sentiment analysis goal and many online code resources are available as well. \n",
+    "Last but not the least, we will explore the relationship between public perceptions collected through Weibo data and the real-world mangrove coverage. By conducting a regression analysis, we will conduct statistically significant conclusion on whether mangrove coverage data, either mangrove deforestation or mangrove increase, are correlated with public perceptions’ attitude change related to mangrove. \n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "# Project Goals and Timeline\n",
+    "\n",
+    "My goals and timeline have three parts in response to my study.The first part is data collection process. This part would be the most challeging in my whole study because of some potential unexpected problems. Therefore, I will spend three weeks and analyze the data no matter how many records I can collect at that time.(Deadline: Feb 7).\n",
+    "\n",
+    "The second part is the data analysis process. It contains sentiment analysis and regression analysis. The sentiment analysis has three parts. a) differentiate the attitudes among the text 2) identify key words 3) explore how attitudes and keywords are chaning along with time. I will spent three weeks to explore the potential functions that are potentially useful for each of the analysis.(Deadline: Feb 28th). Regression analysis is the analysis I am quite familiar with. I plans two weeks here in case any uncertain problems will merge and give some buffer time to wrap up the sentiment analysis(Deadline: Mar 21).\n",
+    "\n",
+    "The third part would be wrap up the documentation and prepare for the final presentation. To align with this course deadline, the rest of the semester would be debug my code and have a nice presentation. (Deadline: April 20th)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "---\n",
+    "# Anticipating Challenges  \n",
+    "\n",
+    "\n",
+    "Honestly, there are many challenges ahead to this project. First of all, the challenge would be how to get the data I want that covers past several years. I have never explored Weibo’s API before, but have known some policies about twitter API, for example, only limited number of tweets can be accessed through the API and only the most recent seven days of tweets can be downloaded. These policies are against the time scope of my research project, which requires the accessibility of Weibo’s data for at least several years. In addition, the intensive data for such large time span brings high requirements and challenges on the computing power to success in the whole analysis from data collection, to data analysis and data visualization. Maybe the HPCC can help me on it if I need it. Lastly, from my personal perspective, I am not confident on how to successfully conduct the whole analysis except for regression. It would also be a challenge for me to build the whole pipeline in python. Hopefully, I can have good solution as I go further into the project.\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "anaconda-cloud": {},
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 1
+}
