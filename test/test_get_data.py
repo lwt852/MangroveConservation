@@ -1,0 +1,1 @@
+Mon Dec 30 22:06:42 +0000 2019,slugsnshells,"Honolulu, HI",111,202,False,,2,14,"b'2019 was a big year for mangrove slugs! 8 new species of onchidiid slug described from 4 genera, and 2 of these are new genera! More onchidiid papers (and more photos of slugs in the field!) coming in 2020! #MolluscMonday Happy New Year! https://t.co/FQGuBhtkwX'"

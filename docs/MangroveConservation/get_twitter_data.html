@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.7.4" />
-<title>get_twitter_data API documentation</title>
+<title>MangroveConservation.get_twitter_data API documentation</title>
 <meta name="description" content="" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
@@ -17,61 +17,65 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>get_twitter_data</code></h1>
+<h1 class="title">Module <code>MangroveConservation.get_twitter_data</code></h1>
 </header>
 <section id="section-intro">
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_data(search_term,search_location,start_time,end_time):
+<pre><code class="python"># Collecting Twitter historical data using TwitterAPI
 
-    &#34;&#34;&#34;this function is to get twitter data through twitter API from full archive search sand box and return all twitters
-    based on certain search term, the geographic location of interest and the time period of interest.
-    &#34;&#34;&#34;
-    from TwitterAPI import TwitterAPI, TwitterPager
-    api = TwitterAPI(&#34;eNpG2G70aY2KKujwtlWkvcJoS&#34;,
-                 &#34;fgk44fdHs9WpYEDtKm1w3UKpSLN2Md61cD0RNmlftrKmifykuB&#34;,
-                 &#34;2972155805-0NuM9ND8aZ0PA77G5kUBzHNFOefI4090JAxszws&#34;,
-                 &#34;E7idsdPtc6VlvIRNUrROx5pTvzTon38alLZ9PooHVVhBe&#34;)
-    SEARCH_TERM = &#39;-RT&#39;+ search_term+  &#39;lang:en&#39; # sandbox does not support &#34;has:geo&#34;
+from TwitterAPI import TwitterAPI, TwitterPager
+import csv
+def get_data(SEARCH_TERM,key,secret, access_token, access_token_secret,start_time,end_time,file_name):
+    &#34;&#34;&#34; get twitter data through twitter API from full archive search sand box and return all twitters
+    based on 
+     search term, 
+     the geographic location of interest
+     the time period of interest.
+     and personal twitter account information.
     
-    PRODUCT = &#39;fullarchive&#39; 
-    LABEL = &#39;search&#39;
-    r = api.request(&#39;tweets/search/%s/:%s&#39; % (PRODUCT, LABEL),
+     Reference: https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI
+     Reference: https://developer.twitter.com/en/docs/tweets/search/overview
+    &#34;&#34;&#34;
+
+    api = TwitterAPI(key,
+                 secret,
+                 access_token,
+                 access_token_secret)
+    
+
+    r = api.request(&#39;tweets/search/%s/:%s&#39; % (&#34;fullarchive&#34;, &#34;mangroveConservation&#34;),
                     {&#39;query&#39;:SEARCH_TERM,
-                     &#39;fromDate&#39;:start_time +&#39;0000&#39;, 
-                     &#39;toDate&#39;:end_time+&#39;0000&#39;,
+                     &#39;max_results&#39;: 100,
+                     &#39;fromDate&#39;:start_time, 
+                     &#39;toDate&#39;:end_time,
                      })
-    return r
 
-def write_twitter(r, file_name):
+# write tweets into a csv file
 
-    
-    &#34;&#34;&#34;this function is to store the twitters into 
-        a file with only attributed of interest
-    &#34;&#34;&#34;
-    import csv
     csvFile = open(file_name,&#39;a&#39;)
     csvWriter = csv.writer(csvFile)
-
-    counter = 0
+#    counter = 0
     for item in r:
         if &#39;extended_tweet&#39; in item: # to avoid truncated tweets
             csvWriter.writerow([item[&#39;created_at&#39;],item[&#39;user&#39;][&#39;screen_name&#39;], item[&#39;user&#39;][&#39;location&#39;], 
                             item[&#39;user&#39;][&#39;followers_count&#39;], item[&#39;user&#39;][&#39;friends_count&#39;], 
-                            item[&#39;user&#39;][&#39;verified&#39;], item[&#39;coordinates&#39;], item[&#39;retweet_count&#39;], 
-                            item[&#39;favorite_count&#39;], item[&#39;extended_tweet&#39;][&#39;full_text&#39;]])
+                            item[&#39;user&#39;][&#39;verified&#39;], item[&#39;coordinates&#39;], item[&#39;retweet_count&#39;], item[&#39;favorite_count&#39;], 
+                                item[&#39;extended_tweet&#39;][&#39;full_text&#39;].encode(&#39;utf-8&#39;) if &#39;full_text&#39; in item[&#39;extended_tweet&#39;] else item[&#39;extended_tweet&#39;] ])
         else:
             csvWriter.writerow([item[&#39;created_at&#39;],item[&#39;user&#39;][&#39;screen_name&#39;], item[&#39;user&#39;][&#39;location&#39;], 
                             item[&#39;user&#39;][&#39;followers_count&#39;], item[&#39;user&#39;][&#39;friends_count&#39;], 
                             item[&#39;user&#39;][&#39;verified&#39;], item[&#39;coordinates&#39;], item[&#39;retweet_count&#39;], 
-                            item[&#39;favorite_count&#39;], item[&#39;text&#39;]])
-        counter = counter + 1
-        if (counter == 100): # rate limit 100 responses per request
-            break
+                            item[&#39;favorite_count&#39;], item[&#39;text&#39;].encode(&#39;utf-8&#39;) if &#39;text&#39; in item else item])
+#        counter = counter + 1
+#        if (counter == 100): # rate limit 100 responses per request
+#            break
+
     csvFile.close()
-    return csvFile</code></pre>
+    print(&#34;{} is successfully created.&#34;.format(file_name))
+    return</code></pre>
 </details>
 </section>
 <section>
@@ -81,75 +85,70 @@ def write_twitter(r, file_name):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="get_twitter_data.get_data"><code class="name flex">
-<span>def <span class="ident">get_data</span></span>(<span>search_term, search_location, start_time, end_time)</span>
+<dt id="MangroveConservation.get_twitter_data.get_data"><code class="name flex">
+<span>def <span class="ident">get_data</span></span>(<span>SEARCH_TERM, key, secret, access_token, access_token_secret, start_time, end_time, file_name)</span>
 </code></dt>
 <dd>
-<section class="desc"><p>this function is to get twitter data through twitter API from full archive search sand box and return all twitters
-based on certain search term, the geographic location of interest and the time period of interest.</p></section>
+<section class="desc"><p>get twitter data through twitter API from full archive search sand box and return all twitters
+based on
+search term,
+the geographic location of interest
+the time period of interest.
+and personal twitter account information.</p>
+<p>Reference: <a href="https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI">https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI</a>
+Reference: <a href="https://developer.twitter.com/en/docs/tweets/search/overview">https://developer.twitter.com/en/docs/tweets/search/overview</a></p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def get_data(search_term,search_location,start_time,end_time):
-
-    &#34;&#34;&#34;this function is to get twitter data through twitter API from full archive search sand box and return all twitters
-    based on certain search term, the geographic location of interest and the time period of interest.
-    &#34;&#34;&#34;
-    from TwitterAPI import TwitterAPI, TwitterPager
-    api = TwitterAPI(&#34;eNpG2G70aY2KKujwtlWkvcJoS&#34;,
-                 &#34;fgk44fdHs9WpYEDtKm1w3UKpSLN2Md61cD0RNmlftrKmifykuB&#34;,
-                 &#34;2972155805-0NuM9ND8aZ0PA77G5kUBzHNFOefI4090JAxszws&#34;,
-                 &#34;E7idsdPtc6VlvIRNUrROx5pTvzTon38alLZ9PooHVVhBe&#34;)
-    SEARCH_TERM = &#39;-RT&#39;+ search_term+  &#39;lang:en&#39; # sandbox does not support &#34;has:geo&#34;
+<pre><code class="python">def get_data(SEARCH_TERM,key,secret, access_token, access_token_secret,start_time,end_time,file_name):
+    &#34;&#34;&#34; get twitter data through twitter API from full archive search sand box and return all twitters
+    based on 
+     search term, 
+     the geographic location of interest
+     the time period of interest.
+     and personal twitter account information.
     
-    PRODUCT = &#39;fullarchive&#39; 
-    LABEL = &#39;search&#39;
-    r = api.request(&#39;tweets/search/%s/:%s&#39; % (PRODUCT, LABEL),
+     Reference: https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI
+     Reference: https://developer.twitter.com/en/docs/tweets/search/overview
+    &#34;&#34;&#34;
+
+    api = TwitterAPI(key,
+                 secret,
+                 access_token,
+                 access_token_secret)
+    
+
+    r = api.request(&#39;tweets/search/%s/:%s&#39; % (&#34;fullarchive&#34;, &#34;mangroveConservation&#34;),
                     {&#39;query&#39;:SEARCH_TERM,
-                     &#39;fromDate&#39;:start_time +&#39;0000&#39;, 
-                     &#39;toDate&#39;:end_time+&#39;0000&#39;,
+                     &#39;max_results&#39;: 100,
+                     &#39;fromDate&#39;:start_time, 
+                     &#39;toDate&#39;:end_time,
                      })
-    return r</code></pre>
-</details>
-</dd>
-<dt id="get_twitter_data.write_twitter"><code class="name flex">
-<span>def <span class="ident">write_twitter</span></span>(<span>r, file_name)</span>
-</code></dt>
-<dd>
-<section class="desc"><p>this function is to store the twitters into
-a file with only attributed of interest</p></section>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def write_twitter(r, file_name):
 
-    
-    &#34;&#34;&#34;this function is to store the twitters into 
-        a file with only attributed of interest
-    &#34;&#34;&#34;
-    import csv
+# write tweets into a csv file
+
     csvFile = open(file_name,&#39;a&#39;)
     csvWriter = csv.writer(csvFile)
-
-    counter = 0
+#    counter = 0
     for item in r:
         if &#39;extended_tweet&#39; in item: # to avoid truncated tweets
             csvWriter.writerow([item[&#39;created_at&#39;],item[&#39;user&#39;][&#39;screen_name&#39;], item[&#39;user&#39;][&#39;location&#39;], 
                             item[&#39;user&#39;][&#39;followers_count&#39;], item[&#39;user&#39;][&#39;friends_count&#39;], 
-                            item[&#39;user&#39;][&#39;verified&#39;], item[&#39;coordinates&#39;], item[&#39;retweet_count&#39;], 
-                            item[&#39;favorite_count&#39;], item[&#39;extended_tweet&#39;][&#39;full_text&#39;]])
+                            item[&#39;user&#39;][&#39;verified&#39;], item[&#39;coordinates&#39;], item[&#39;retweet_count&#39;], item[&#39;favorite_count&#39;], 
+                                item[&#39;extended_tweet&#39;][&#39;full_text&#39;].encode(&#39;utf-8&#39;) if &#39;full_text&#39; in item[&#39;extended_tweet&#39;] else item[&#39;extended_tweet&#39;] ])
         else:
             csvWriter.writerow([item[&#39;created_at&#39;],item[&#39;user&#39;][&#39;screen_name&#39;], item[&#39;user&#39;][&#39;location&#39;], 
                             item[&#39;user&#39;][&#39;followers_count&#39;], item[&#39;user&#39;][&#39;friends_count&#39;], 
                             item[&#39;user&#39;][&#39;verified&#39;], item[&#39;coordinates&#39;], item[&#39;retweet_count&#39;], 
-                            item[&#39;favorite_count&#39;], item[&#39;text&#39;]])
-        counter = counter + 1
-        if (counter == 100): # rate limit 100 responses per request
-            break
+                            item[&#39;favorite_count&#39;], item[&#39;text&#39;].encode(&#39;utf-8&#39;) if &#39;text&#39; in item else item])
+#        counter = counter + 1
+#        if (counter == 100): # rate limit 100 responses per request
+#            break
+
     csvFile.close()
-    return csvFile</code></pre>
+    print(&#34;{} is successfully created.&#34;.format(file_name))
+    return</code></pre>
 </details>
 </dd>
 </dl>
@@ -163,10 +162,14 @@ a file with only attributed of interest</p></section>
 <ul></ul>
 </div>
 <ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="MangroveConservation" href="index.html">MangroveConservation</a></code></li>
+</ul>
+</li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="get_twitter_data.get_data" href="#get_twitter_data.get_data">get_data</a></code></li>
-<li><code><a title="get_twitter_data.write_twitter" href="#get_twitter_data.write_twitter">write_twitter</a></code></li>
+<li><code><a title="MangroveConservation.get_twitter_data.get_data" href="#MangroveConservation.get_twitter_data.get_data">get_data</a></code></li>
 </ul>
 </li>
 </ul>
