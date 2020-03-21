@@ -66,10 +66,7 @@ def ImportTweet(file):
     a Pandas dataframe with clean time (in UTC), location (latitude and longitude), and text.
     """
     raw = pd.read_csv(file,header=None)
-    raw.columns = ["created_at", "id","hashtags","user_mentions","in_reply_to_status_id","in_reply_to_user_id",
-               "in_reply_to_screen_name","username", "id", "profile_location","description","user_url",
-               "followers","friends","user_created_at","verified", "geo","coordinates","place",
-               "retweet","favorite","text"]
+    raw.columns = ["created_at", "user_id","location","followers","friends","username", "verified", "unknown","coordinates","text"]
     raw = raw[["created_at","coordinates","text"]]
     # convert time format to UTC
     time=[]
@@ -78,7 +75,7 @@ def ImportTweet(file):
     raw.insert(0, "time",time)
     raw["time"] = pd.to_datetime(raw["time"], utc = True)
     raw2 = raw.drop(columns="created_at")
-    # clean up coordinates
+###### clean up coordinates(for now, the coordinates are not showing correctly)
     long = []
     lat = []
     for i in range(len(raw2)):

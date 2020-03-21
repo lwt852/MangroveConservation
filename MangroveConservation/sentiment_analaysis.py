@@ -8,7 +8,7 @@ adpted from Meng Cai's code
 """A few functions for exploratory analysis of text data."""
 
 from sklearn.feature_extraction.text import CountVectorizer
-from wordcloud import WordCloud
+from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 import matplotlib.pyplot as plt
 import pandas as pd
 import spacy
