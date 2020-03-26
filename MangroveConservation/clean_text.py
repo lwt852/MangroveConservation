@@ -34,14 +34,17 @@ def CommentCleaner(dirty_text):
     Input:
     dirty_text -- raw text data. 
     Output:
-    clean text data.
+    clean text data
     """
-    text = dirty_text.str.replace("(<br>)", "") # remove blank line
-    text = text.str.replace('(<a).*(>).*(</a>)', "") # remove <a> tag
-    text = text.str.replace('(&amp)', "") # remove "&"
-    text = text.str.replace('(&gt)', '') # remove ">"
-    text = text.str.replace('(&lt)', '') # remove "<"
-    clean_text = text.str.replace('(\xa0)', "")  # remove non-breaking space in ISO 8859-1
+    if dirty_text is not None:
+        text = dirty_text.replace("(<br>)", "") # remove blank line
+        text = text.replace('(<a).*(>).*(</a>)', "") # remove <a> tag
+        text = text.replace('(&amp)', "") # remove "&"
+        text = text.replace('(&gt)', '') # remove ">"
+        text = text.replace('(&lt)', '') # remove "<"
+        text = text.replace('nan','')  # remove NA
+#        text = text.replace('mangrove forest','')  # remove the search term
+        clean_text = text.replace('(\xa0)', "")  # remove non-breaking space in ISO 8859-1
     return clean_text
 
 def TweetCleaner(dirty_text):
@@ -78,7 +81,25 @@ def ImportTweet(file):
     # clean text
     cleantweet=[]
     for i in raw2["text"]:
-        cleantweet.append(TweetCleaner(i))
+        temp = CommentCleaner(i)
+        cleantweet.append(TweetCleaner(temp))
     raw2.insert(3, "tweet", cleantweet)
-    df = raw2.drop(columns="text")
+    raw3 = raw2.drop(columns="text")
+
+    #clean user_bio
+    cleantweet1=[]
+    for i in raw3["user_bio"]:
+        i = CommentCleaner(str(i))
+        cleantweet1.append(TweetCleaner(i))
+    raw3.insert(3, "user_description", cleantweet1)
+    raw4 = raw3.drop(columns="user_bio")
+    
+    #clean username
+    cleantweet2=[]
+    for i in raw4["username"]:
+        i = CommentCleaner(str(i))
+        cleantweet2.append(TweetCleaner(i))
+    raw4.insert(3, "name", cleantweet2)
+    df = raw4.drop(columns="username")
     return df
+

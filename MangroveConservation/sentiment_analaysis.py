@@ -7,21 +7,20 @@ adpted from Meng Cai's code
 """
 """A few functions for exploratory analysis of text data."""
 
+
 from sklearn.feature_extraction.text import CountVectorizer
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import pandas as pd
-import spacy
 import nltk
 from spacy.lang.en import English
 from nltk.corpus import wordnet as wn
-from nltk.stem.wordnet import WordNetLemmatizer
 import gensim
 from gensim import corpora
 import pyLDAvis.gensim
+from textblob import TextBlob
 nltk.download("stopwords")
-import warnings
-warnings.simplefilter("ignore", DeprecationWarning)
+nltk.download("wordnet")
 
 def PlotTopWords(text, n, ngram_min=1, ngram_max=1, remove_stop_words=True):
     """
@@ -184,4 +183,62 @@ def PlotLDA(model, corpus, dictionary):
     """
     lda_display = pyLDAvis.gensim.prepare(model, corpus, dictionary, sort_topics=False)
     return pyLDAvis.display(lda_display)
+
+def WhichTopic(text, ldamodel, corpus):
+    """
+    Find the most likely topic of text.
+
+    Input:
+    text -- list of text data;
+    ldamodel -- a LDA model built by LDATopic;
+    corpus -- a corpus built by LDATopic.
+    Output:
+    the most likely topic of each piece of text.
+    """
+    topic = []
+    for i in range(len(text)):
+        topic_index, topic_value = max(ldamodel[corpus[i]], key=lambda item: item[1])
+        topic.append(topic_index)
+    return topic
+
+def Sentiment(text):
+    """
+    Detect the sentiment of text.
+
+    Input:
+    text -- list of text data;
+    Output:
+    sentiments decided by TextBlob.
+
+    Reference:
+    https://textblob.readthedocs.io/en/dev/
+    """
+    sentiment = []
+    for i in range(len(text)):
+        analysis = TextBlob(text.iloc[i])
+        if analysis.sentiment.polarity > 0:
+            sentiment.append("Positive")
+        elif analysis.sentiment.polarity == 0:
+            sentiment.append("Neutral")
+        else:
+            sentiment.append("Negative")
+    return sentiment
+
+def PlotSentiment(sentiment):
+    """
+    Visualize percentages of sentiments.
+
+    Input:
+    sentiment -- a column with sentiments.
+    Output:
+    a pie plot of sentiments.
+    """
+    plt.figure(figsize=[6, 6])
+    senticount = [list(sentiment).count("Positive"),
+                  list(sentiment).count("Neutral"),
+                  list(sentiment).count("Negative")]
+    sentilabel = ["Positive", "Neutural", "Negative"]
+    colors = ["#5A8A91", "#FBC800", "#EF2648"]
+    plt.pie(senticount, colors=colors, labels=sentilabel, autopct='%1.1f%%')
+    return
 
