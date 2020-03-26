@@ -66,8 +66,7 @@ def ImportTweet(file):
     a Pandas dataframe with clean time (in UTC), location (latitude and longitude), and text.
     """
     raw = pd.read_csv(file,header=None)
-    raw.columns = ["created_at", "user_id","location","followers","friends","username", "verified", "unknown","coordinates","text"]
-    raw = raw[["created_at","coordinates","text"]]
+    raw.columns = ['created_at','follower_count','id','text','user_bio','user_joined','user_location','username']
     # convert time format to UTC
     time=[]
     for i in raw["created_at"]:
@@ -75,24 +74,11 @@ def ImportTweet(file):
     raw.insert(0, "time",time)
     raw["time"] = pd.to_datetime(raw["time"], utc = True)
     raw2 = raw.drop(columns="created_at")
-###### clean up coordinates(for now, the coordinates are not showing correctly)
-    long = []
-    lat = []
-    for i in range(len(raw2)):
-        num = re.findall("[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?", str(raw2["coordinates"].iloc[i]))
-        if len(num)==0:
-            long.append(np.NaN)
-            lat.append(np.NaN)
-        else:
-            long.append(float(num[0]))
-            lat.append(float(num[1]))
-    raw2.insert(2, "long", long)
-    raw2.insert(2, "lat", lat)
-    raw3= raw2.drop(columns="coordinates")
+
     # clean text
     cleantweet=[]
-    for i in raw3["text"]:
+    for i in raw2["text"]:
         cleantweet.append(TweetCleaner(i))
-    raw3.insert(3, "tweet", cleantweet)
-    df = raw3.drop(columns="text")
+    raw2.insert(3, "tweet", cleantweet)
+    df = raw2.drop(columns="text")
     return df

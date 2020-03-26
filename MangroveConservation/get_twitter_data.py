@@ -22,7 +22,7 @@ def get_data(SEARCH_TERM,key,secret, access_token, access_token_secret,start_tim
 
     r = api.request('tweets/search/%s/:%s' % ("fullarchive", "mangroveConservation"),
                     {'query':SEARCH_TERM,
-                     'max_results': 100,
+                     'max_results': 6000,
                      'fromDate':start_time, 
                      'toDate':end_time,
                      })
