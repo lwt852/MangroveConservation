@@ -1,3 +1,9 @@
-.ngroveConservation/__pycache__/
+MangroveConservation/__pycache__/
+models/.ipynb_checkpoints/
+models/archive_get_twitter_data.py
+test/__pycache__/
+.ingroveConservation/__pycache__/
 ipynb_checkpoints/
-models/__pycache__
+models/pynb_checkpoints/
+models/.ipynb_checkpoints/
+__pycache__
