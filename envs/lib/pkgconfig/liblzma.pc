@@ -1,0 +1,19 @@
+#
+# Author: Lasse Collin
+#
+# This file has been put into the public domain.
+# You can do whatever you want with this file.
+#
+
+prefix=/home/gongmimi/CMSE802/MangroveConservation/envs
+exec_prefix=/home/gongmimi/CMSE802/MangroveConservation/envs
+libdir=/home/gongmimi/CMSE802/MangroveConservation/envs/lib
+includedir=/home/gongmimi/CMSE802/MangroveConservation/envs/include
+
+Name: liblzma
+Description: General purpose data compression library
+URL: https://tukaani.org/xz/
+Version: 5.2.4
+Cflags: -I${includedir}
+Libs: -L${libdir} -llzma
+Libs.private: -pthread -lrt  

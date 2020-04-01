@@ -1,0 +1,13 @@
+prefix=/home/gongmimi/CMSE802/MangroveConservation/envs
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+modules=1
+
+Name: libXML
+Version: 2.9.9
+Description: libXML library version2.
+Requires:
+Libs: -L${libdir} -lxml2
+Libs.private:  -lpthread -L/home/gongmimi/CMSE802/MangroveConservation/envs/lib -lz -L/home/gongmimi/CMSE802/MangroveConservation/envs/lib -llzma -L/home/gongmimi/CMSE802/MangroveConservation/envs/lib -lm  
+Cflags: -I${includedir}/libxml2 -I/home/gongmimi/CMSE802/MangroveConservation/envs/include 
