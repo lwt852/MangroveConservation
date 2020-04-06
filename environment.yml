@@ -1,19 +1,24 @@
 channels:
   - defaults
 dependencies:
-  - scikit-learn
   - jupyter
   - spacy
-  - lxml
-  - nltk
+  - yaml
+  - pandas
   - pylint
   - matplotlib
-  - pandas
-  - numpy
-  - pytest
-  - yaml
+  - lxml
+  - gensim
+  - scikit-learn
   - pip
   - autopep8
-  - gensim
+  - nltk
+  - numpy
+  - pytest
+  - pyyaml
   - pip:
-    - pyLDAvis 
+    - pyLDAvis
+    - json_lines
+    - yaml
+    - wordcloud
+    - textblob
