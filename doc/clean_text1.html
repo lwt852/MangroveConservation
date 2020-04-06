@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.7.4" />
-<title>MangroveConservation.clean_text API documentation</title>
+<title>clean_text1 API documentation</title>
 <meta name="description" content="Created on Thu Feb 27 14:05:58 2020 …" />
 <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
 <link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
@@ -17,7 +17,7 @@
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>MangroveConservation.clean_text</code></h1>
+<h1 class="title">Module <code>clean_text1</code></h1>
 </header>
 <section id="section-intro">
 <p>Created on Thu Feb 27 14:05:58 2020</p>
@@ -36,15 +36,17 @@ Adopted from Meng Cai
 &#34;&#34;&#34;
 &#34;&#34;&#34;A few functions for processing text data.&#34;&#34;&#34;
 
+
+
+
 import pandas as pd
 import numpy as np
 import re
 from datetime import datetime, timezone
-
 def ImportComment(file, text_column):
     &#34;&#34;&#34;
     Load a csv file with survey comments, remove rows with empty text or illegible words or N/A answer.
-    
+
     Input: 
     file -- the name of a csv file; 
     text_column -- the name of the target text column.
@@ -52,78 +54,93 @@ def ImportComment(file, text_column):
     a Pandas dataframe.
     &#34;&#34;&#34;
     raw = pd.read_csv(file, encoding=&#34;ISO-8859-1&#34;)
-    df = raw[~raw[text_column].isnull()] # remove the rows where texts are missing
-    df = df[df[text_column].str.contains(&#34;illegible|Illegible|N/A&#34;)==False] # remove the rows containing illegible words or N/A
+    # remove the rows where texts are missing
+    df = raw[~raw[text_column].isnull()]
+    # remove the rows containing illegible words or N/A
+    df = df[df[text_column].str.contains(&#34;illegible|Illegible|N/A&#34;) == False]
     return df
+
 
 def CommentCleaner(dirty_text):
     &#34;&#34;&#34;
     Remove blank lines and special characters from text data collected from surveys.
-    
+
     Input:
     dirty_text -- raw text data. 
     Output:
-    clean text data.
+    clean text data
     &#34;&#34;&#34;
-    text = dirty_text.str.replace(&#34;(&lt;br&gt;)&#34;, &#34;&#34;) # remove blank line
-    text = text.str.replace(&#39;(&lt;a).*(&gt;).*(&lt;/a&gt;)&#39;, &#34;&#34;) # remove &lt;a&gt; tag
-    text = text.str.replace(&#39;(&amp;amp)&#39;, &#34;&#34;) # remove &#34;&amp;&#34;
-    text = text.str.replace(&#39;(&amp;gt)&#39;, &#39;&#39;) # remove &#34;&gt;&#34;
-    text = text.str.replace(&#39;(&amp;lt)&#39;, &#39;&#39;) # remove &#34;&lt;&#34;
-    clean_text = text.str.replace(&#39;(\xa0)&#39;, &#34;&#34;)  # remove non-breaking space in ISO 8859-1
+    if dirty_text is not None:
+        text = dirty_text.replace(&#34;(&lt;br&gt;)&#34;, &#34;&#34;)  # remove blank line
+        text = text.replace(&#39;(&lt;a).*(&gt;).*(&lt;/a&gt;)&#39;, &#34;&#34;)  # remove &lt;a&gt; tag
+        text = text.replace(&#39;(&amp;amp)&#39;, &#34;&#34;)  # remove &#34;&amp;&#34;
+        text = text.replace(&#39;(&amp;gt)&#39;, &#39;&#39;)  # remove &#34;&gt;&#34;
+        text = text.replace(&#39;(&amp;lt)&#39;, &#39;&#39;)  # remove &#34;&lt;&#34;
+        text = text.replace(&#39;nan&#39;, &#39;&#39;)  # remove NA
+#        text = text.replace(&#39;mangrove forest&#39;,&#39;&#39;)  # remove the search term
+        # remove non-breaking space in ISO 8859-1
+        clean_text = text.replace(&#39;(\xa0)&#39;, &#34;&#34;)
     return clean_text
+
 
 def TweetCleaner(dirty_text):
     &#34;&#34;&#34;
     Remove links and special characters from a tweet.
-    
+
     Input:
     dirty_text -- a raw tweet.
     Output:
     a clean tweet.
     &#34;&#34;&#34;
-    clean_text = &#34; &#34;.join(re.sub(&#34;(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)&#34;, &#34; &#34;, dirty_text).split())
+    clean_text = &#34; &#34;.join(re.sub(
+        &#34;(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)&#34;, &#34; &#34;, dirty_text).split())
     return clean_text
+
 
 def ImportTweet(file):
     &#34;&#34;&#34;
     Load a csv file with tweets, drop all columns except time, location, and tweet content.
-    
+
     Input: 
     file -- the name of a csv file. 
     Output: 
     a Pandas dataframe with clean time (in UTC), location (latitude and longitude), and text.
     &#34;&#34;&#34;
-    raw = pd.read_csv(file,header=None)
-    raw.columns = [&#34;created_at&#34;, &#34;user_id&#34;,&#34;location&#34;,&#34;followers&#34;,&#34;friends&#34;,&#34;username&#34;, &#34;verified&#34;, &#34;unknown&#34;,&#34;coordinates&#34;,&#34;text&#34;]
-    raw = raw[[&#34;created_at&#34;,&#34;coordinates&#34;,&#34;text&#34;]]
+    raw = pd.read_csv(file, header=None)
+    raw.columns = [&#39;created_at&#39;, &#39;follower_count&#39;, &#39;id&#39;, &#39;text&#39;,
+                   &#39;user_bio&#39;, &#39;user_joined&#39;, &#39;user_location&#39;, &#39;username&#39;]
     # convert time format to UTC
-    time=[]
+    time = []
     for i in raw[&#34;created_at&#34;]:
-        time.append(datetime.strptime(i,&#39;%a %b %d %H:%M:%S %z %Y&#39;).replace(tzinfo=timezone.utc).astimezone(tz=None).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;))
-    raw.insert(0, &#34;time&#34;,time)
-    raw[&#34;time&#34;] = pd.to_datetime(raw[&#34;time&#34;], utc = True)
+        time.append(datetime.strptime(i, &#39;%a %b %d %H:%M:%S %z %Y&#39;).replace(
+            tzinfo=timezone.utc).astimezone(tz=None).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;))
+    raw.insert(0, &#34;time&#34;, time)
+    raw[&#34;time&#34;] = pd.to_datetime(raw[&#34;time&#34;], utc=True)
     raw2 = raw.drop(columns=&#34;created_at&#34;)
-###### clean up coordinates(for now, the coordinates are not showing correctly)
-    long = []
-    lat = []
-    for i in range(len(raw2)):
-        num = re.findall(&#34;[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?&#34;, str(raw2[&#34;coordinates&#34;].iloc[i]))
-        if len(num)==0:
-            long.append(np.NaN)
-            lat.append(np.NaN)
-        else:
-            long.append(float(num[0]))
-            lat.append(float(num[1]))
-    raw2.insert(2, &#34;long&#34;, long)
-    raw2.insert(2, &#34;lat&#34;, lat)
-    raw3= raw2.drop(columns=&#34;coordinates&#34;)
+
     # clean text
-    cleantweet=[]
-    for i in raw3[&#34;text&#34;]:
-        cleantweet.append(TweetCleaner(i))
-    raw3.insert(3, &#34;tweet&#34;, cleantweet)
-    df = raw3.drop(columns=&#34;text&#34;)
+    cleantweet = []
+    for i in raw2[&#34;text&#34;]:
+        temp = CommentCleaner(i)
+        cleantweet.append(TweetCleaner(temp))
+    raw2.insert(3, &#34;tweet&#34;, cleantweet)
+    raw3 = raw2.drop(columns=&#34;text&#34;)
+
+    # clean user_bio
+    cleantweet1 = []
+    for i in raw3[&#34;user_bio&#34;]:
+        i = CommentCleaner(str(i))
+        cleantweet1.append(TweetCleaner(i))
+    raw3.insert(3, &#34;user_description&#34;, cleantweet1)
+    raw4 = raw3.drop(columns=&#34;user_bio&#34;)
+
+    # clean username
+    cleantweet2 = []
+    for i in raw4[&#34;username&#34;]:
+        i = CommentCleaner(str(i))
+        cleantweet2.append(TweetCleaner(i))
+    raw4.insert(3, &#34;name&#34;, cleantweet2)
+    df = raw4.drop(columns=&#34;username&#34;)
     return df</code></pre>
 </details>
 </section>
@@ -134,7 +151,7 @@ def ImportTweet(file):
 <section>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="MangroveConservation.clean_text.CommentCleaner"><code class="name flex">
+<dt id="clean_text1.CommentCleaner"><code class="name flex">
 <span>def <span class="ident">CommentCleaner</span></span>(<span>dirty_text)</span>
 </code></dt>
 <dd>
@@ -142,7 +159,7 @@ def ImportTweet(file):
 <p>Input:
 dirty_text &ndash; raw text data.
 Output:
-clean text data.</p></section>
+clean text data</p></section>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -150,22 +167,26 @@ clean text data.</p></section>
 <pre><code class="python">def CommentCleaner(dirty_text):
     &#34;&#34;&#34;
     Remove blank lines and special characters from text data collected from surveys.
-    
+
     Input:
     dirty_text -- raw text data. 
     Output:
-    clean text data.
+    clean text data
     &#34;&#34;&#34;
-    text = dirty_text.str.replace(&#34;(&lt;br&gt;)&#34;, &#34;&#34;) # remove blank line
-    text = text.str.replace(&#39;(&lt;a).*(&gt;).*(&lt;/a&gt;)&#39;, &#34;&#34;) # remove &lt;a&gt; tag
-    text = text.str.replace(&#39;(&amp;amp)&#39;, &#34;&#34;) # remove &#34;&amp;&#34;
-    text = text.str.replace(&#39;(&amp;gt)&#39;, &#39;&#39;) # remove &#34;&gt;&#34;
-    text = text.str.replace(&#39;(&amp;lt)&#39;, &#39;&#39;) # remove &#34;&lt;&#34;
-    clean_text = text.str.replace(&#39;(\xa0)&#39;, &#34;&#34;)  # remove non-breaking space in ISO 8859-1
+    if dirty_text is not None:
+        text = dirty_text.replace(&#34;(&lt;br&gt;)&#34;, &#34;&#34;)  # remove blank line
+        text = text.replace(&#39;(&lt;a).*(&gt;).*(&lt;/a&gt;)&#39;, &#34;&#34;)  # remove &lt;a&gt; tag
+        text = text.replace(&#39;(&amp;amp)&#39;, &#34;&#34;)  # remove &#34;&amp;&#34;
+        text = text.replace(&#39;(&amp;gt)&#39;, &#39;&#39;)  # remove &#34;&gt;&#34;
+        text = text.replace(&#39;(&amp;lt)&#39;, &#39;&#39;)  # remove &#34;&lt;&#34;
+        text = text.replace(&#39;nan&#39;, &#39;&#39;)  # remove NA
+#        text = text.replace(&#39;mangrove forest&#39;,&#39;&#39;)  # remove the search term
+        # remove non-breaking space in ISO 8859-1
+        clean_text = text.replace(&#39;(\xa0)&#39;, &#34;&#34;)
     return clean_text</code></pre>
 </details>
 </dd>
-<dt id="MangroveConservation.clean_text.ImportComment"><code class="name flex">
+<dt id="clean_text1.ImportComment"><code class="name flex">
 <span>def <span class="ident">ImportComment</span></span>(<span>file, text_column)</span>
 </code></dt>
 <dd>
@@ -182,7 +203,7 @@ a Pandas dataframe.</p></section>
 <pre><code class="python">def ImportComment(file, text_column):
     &#34;&#34;&#34;
     Load a csv file with survey comments, remove rows with empty text or illegible words or N/A answer.
-    
+
     Input: 
     file -- the name of a csv file; 
     text_column -- the name of the target text column.
@@ -190,12 +211,14 @@ a Pandas dataframe.</p></section>
     a Pandas dataframe.
     &#34;&#34;&#34;
     raw = pd.read_csv(file, encoding=&#34;ISO-8859-1&#34;)
-    df = raw[~raw[text_column].isnull()] # remove the rows where texts are missing
-    df = df[df[text_column].str.contains(&#34;illegible|Illegible|N/A&#34;)==False] # remove the rows containing illegible words or N/A
+    # remove the rows where texts are missing
+    df = raw[~raw[text_column].isnull()]
+    # remove the rows containing illegible words or N/A
+    df = df[df[text_column].str.contains(&#34;illegible|Illegible|N/A&#34;) == False]
     return df</code></pre>
 </details>
 </dd>
-<dt id="MangroveConservation.clean_text.ImportTweet"><code class="name flex">
+<dt id="clean_text1.ImportTweet"><code class="name flex">
 <span>def <span class="ident">ImportTweet</span></span>(<span>file)</span>
 </code></dt>
 <dd>
@@ -211,46 +234,51 @@ a Pandas dataframe with clean time (in UTC), location (latitude and longitude), 
 <pre><code class="python">def ImportTweet(file):
     &#34;&#34;&#34;
     Load a csv file with tweets, drop all columns except time, location, and tweet content.
-    
+
     Input: 
     file -- the name of a csv file. 
     Output: 
     a Pandas dataframe with clean time (in UTC), location (latitude and longitude), and text.
     &#34;&#34;&#34;
-    raw = pd.read_csv(file,header=None)
-    raw.columns = [&#34;created_at&#34;, &#34;user_id&#34;,&#34;location&#34;,&#34;followers&#34;,&#34;friends&#34;,&#34;username&#34;, &#34;verified&#34;, &#34;unknown&#34;,&#34;coordinates&#34;,&#34;text&#34;]
-    raw = raw[[&#34;created_at&#34;,&#34;coordinates&#34;,&#34;text&#34;]]
+    raw = pd.read_csv(file, header=None)
+    raw.columns = [&#39;created_at&#39;, &#39;follower_count&#39;, &#39;id&#39;, &#39;text&#39;,
+                   &#39;user_bio&#39;, &#39;user_joined&#39;, &#39;user_location&#39;, &#39;username&#39;]
     # convert time format to UTC
-    time=[]
+    time = []
     for i in raw[&#34;created_at&#34;]:
-        time.append(datetime.strptime(i,&#39;%a %b %d %H:%M:%S %z %Y&#39;).replace(tzinfo=timezone.utc).astimezone(tz=None).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;))
-    raw.insert(0, &#34;time&#34;,time)
-    raw[&#34;time&#34;] = pd.to_datetime(raw[&#34;time&#34;], utc = True)
+        time.append(datetime.strptime(i, &#39;%a %b %d %H:%M:%S %z %Y&#39;).replace(
+            tzinfo=timezone.utc).astimezone(tz=None).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;))
+    raw.insert(0, &#34;time&#34;, time)
+    raw[&#34;time&#34;] = pd.to_datetime(raw[&#34;time&#34;], utc=True)
     raw2 = raw.drop(columns=&#34;created_at&#34;)
-###### clean up coordinates(for now, the coordinates are not showing correctly)
-    long = []
-    lat = []
-    for i in range(len(raw2)):
-        num = re.findall(&#34;[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?&#34;, str(raw2[&#34;coordinates&#34;].iloc[i]))
-        if len(num)==0:
-            long.append(np.NaN)
-            lat.append(np.NaN)
-        else:
-            long.append(float(num[0]))
-            lat.append(float(num[1]))
-    raw2.insert(2, &#34;long&#34;, long)
-    raw2.insert(2, &#34;lat&#34;, lat)
-    raw3= raw2.drop(columns=&#34;coordinates&#34;)
+
     # clean text
-    cleantweet=[]
-    for i in raw3[&#34;text&#34;]:
-        cleantweet.append(TweetCleaner(i))
-    raw3.insert(3, &#34;tweet&#34;, cleantweet)
-    df = raw3.drop(columns=&#34;text&#34;)
+    cleantweet = []
+    for i in raw2[&#34;text&#34;]:
+        temp = CommentCleaner(i)
+        cleantweet.append(TweetCleaner(temp))
+    raw2.insert(3, &#34;tweet&#34;, cleantweet)
+    raw3 = raw2.drop(columns=&#34;text&#34;)
+
+    # clean user_bio
+    cleantweet1 = []
+    for i in raw3[&#34;user_bio&#34;]:
+        i = CommentCleaner(str(i))
+        cleantweet1.append(TweetCleaner(i))
+    raw3.insert(3, &#34;user_description&#34;, cleantweet1)
+    raw4 = raw3.drop(columns=&#34;user_bio&#34;)
+
+    # clean username
+    cleantweet2 = []
+    for i in raw4[&#34;username&#34;]:
+        i = CommentCleaner(str(i))
+        cleantweet2.append(TweetCleaner(i))
+    raw4.insert(3, &#34;name&#34;, cleantweet2)
+    df = raw4.drop(columns=&#34;username&#34;)
     return df</code></pre>
 </details>
 </dd>
-<dt id="MangroveConservation.clean_text.TweetCleaner"><code class="name flex">
+<dt id="clean_text1.TweetCleaner"><code class="name flex">
 <span>def <span class="ident">TweetCleaner</span></span>(<span>dirty_text)</span>
 </code></dt>
 <dd>
@@ -266,13 +294,14 @@ a clean tweet.</p></section>
 <pre><code class="python">def TweetCleaner(dirty_text):
     &#34;&#34;&#34;
     Remove links and special characters from a tweet.
-    
+
     Input:
     dirty_text -- a raw tweet.
     Output:
     a clean tweet.
     &#34;&#34;&#34;
-    clean_text = &#34; &#34;.join(re.sub(&#34;(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)&#34;, &#34; &#34;, dirty_text).split())
+    clean_text = &#34; &#34;.join(re.sub(
+        &#34;(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)&#34;, &#34; &#34;, dirty_text).split())
     return clean_text</code></pre>
 </details>
 </dd>
@@ -287,17 +316,12 @@ a clean tweet.</p></section>
 <ul></ul>
 </div>
 <ul id="index">
-<li><h3>Super-module</h3>
-<ul>
-<li><code><a title="MangroveConservation" href="index.html">MangroveConservation</a></code></li>
-</ul>
-</li>
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="MangroveConservation.clean_text.CommentCleaner" href="#MangroveConservation.clean_text.CommentCleaner">CommentCleaner</a></code></li>
-<li><code><a title="MangroveConservation.clean_text.ImportComment" href="#MangroveConservation.clean_text.ImportComment">ImportComment</a></code></li>
-<li><code><a title="MangroveConservation.clean_text.ImportTweet" href="#MangroveConservation.clean_text.ImportTweet">ImportTweet</a></code></li>
-<li><code><a title="MangroveConservation.clean_text.TweetCleaner" href="#MangroveConservation.clean_text.TweetCleaner">TweetCleaner</a></code></li>
+<li><code><a title="clean_text1.CommentCleaner" href="#clean_text1.CommentCleaner">CommentCleaner</a></code></li>
+<li><code><a title="clean_text1.ImportComment" href="#clean_text1.ImportComment">ImportComment</a></code></li>
+<li><code><a title="clean_text1.ImportTweet" href="#clean_text1.ImportTweet">ImportTweet</a></code></li>
+<li><code><a title="clean_text1.TweetCleaner" href="#clean_text1.TweetCleaner">TweetCleaner</a></code></li>
 </ul>
 </li>
 </ul>

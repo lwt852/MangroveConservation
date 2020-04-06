@@ -3,7 +3,7 @@
 Created on Thu Feb 27 14:08:10 2020
 
 @author: Mimi Gong
-adpted from Meng Cai's code
+adpted from Meng Cai
 """
 """A few functions for exploratory analysis of text data."""
 

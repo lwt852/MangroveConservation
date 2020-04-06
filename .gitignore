@@ -1,3 +1,5 @@
+/bin/futurize
+envs/
 MangroveConservation/__pycache__/
 models/.ipynb_checkpoints/
 models/archive_get_twitter_data.py
