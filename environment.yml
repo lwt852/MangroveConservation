@@ -16,6 +16,7 @@ dependencies:
   - numpy
   - pytest
   - pyyaml
+  - pdoc3
   - pip:
     - pyLDAvis
     - json_lines
