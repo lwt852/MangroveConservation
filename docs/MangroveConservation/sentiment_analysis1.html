@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>MangroveConservation.sentiment_analysis1 API documentation</title>
+<meta name="description" content="Created on Thu Feb 27 14:08:10 2020 …" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>MangroveConservation.sentiment_analysis1</code></h1>
+</header>
+<section id="section-intro">
+<p>Created on Thu Feb 27 14:08:10 2020</p>
+<p>@author: Mimi Gong
+adpted from Meng Cai</p>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># -*- coding: utf-8 -*-
+&#34;&#34;&#34;
+Created on Thu Feb 27 14:08:10 2020
+
+@author: Mimi Gong
+adpted from Meng Cai
+&#34;&#34;&#34;
+&#34;&#34;&#34;A few functions for exploratory analysis of text data.&#34;&#34;&#34;
+
+
+from sklearn.feature_extraction.text import CountVectorizer
+from wordcloud import WordCloud
+import matplotlib.pyplot as plt
+import pandas as pd
+import nltk
+from spacy.lang.en import English
+from nltk.corpus import wordnet as wn
+import gensim
+from gensim import corpora
+import pyLDAvis.gensim
+from textblob import TextBlob
+nltk.download(&#34;stopwords&#34;)
+nltk.download(&#34;wordnet&#34;)
+
+
+def PlotTopWords(text, n, ngram_min=1, ngram_max=1, remove_stop_words=True):
+    &#34;&#34;&#34;
+    Plot distribution of top words in text.
+
+    Input: 
+    text -- list of text data;
+    n -- number of top words/n-grams to display;
+    ngram_min -- the minimum value of n-grams (default: 1);
+    ngram_max -- the maximum value of n-grams (default: 1);
+    remove_stop_words -- whether or not to remove stop words (default: True). 
+    Output:
+    A plot displaying top n-grams in text.
+
+    Reference:
+    https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
+    &#34;&#34;&#34;
+    if remove_stop_words == True:
+        vec = CountVectorizer(ngram_range=(
+            ngram_min, ngram_max), stop_words=&#34;english&#34;).fit(text)
+        bag_of_words = vec.transform(text)
+        sum_words = bag_of_words.sum(axis=0)
+        words_freq = [(word, sum_words[0, idx])
+                      for word, idx in vec.vocabulary_.items()]
+        words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
+        df = pd.DataFrame(words_freq[:n], columns=[&#34;Topwords&#34;, &#34;Count&#34;])
+        fig, ax = plt.subplots()
+        ax.barh(df[&#34;Topwords&#34;], df[&#34;Count&#34;], color=&#34;teal&#34;)
+        ax.invert_yaxis()
+        ax.set_xlabel(&#34;Count&#34;)
+        ax.set_title(
+            &#34;Top {} words/ phrases after removing stop words&#34;.format(n))
+    if remove_stop_words == False:
+        vec = CountVectorizer(ngram_range=(
+            ngram_min, ngram_max), stop_words=None).fit(text)
+        bag_of_words = vec.transform(text)
+        sum_words = bag_of_words.sum(axis=0)
+        words_freq = [(word, sum_words[0, idx])
+                      for word, idx in vec.vocabulary_.items()]
+        words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
+        df = pd.DataFrame(words_freq[:n], columns=[&#34;Topwords&#34;, &#34;Count&#34;])
+        fig, ax = plt.subplots()
+        ax.barh(df[&#34;Topwords&#34;], df[&#34;Count&#34;], color=&#34;teal&#34;)
+        ax.invert_yaxis()
+        ax.set_xlabel(&#34;Count&#34;)
+        ax.set_title(&#34;Top {} words/ phrases&#34;.format(n))
+    return ax
+
+
+def PlotWordCloud(text):
+    &#34;&#34;&#34;
+    Generate a wordcloud of text.
+
+    Input:
+    text -- list of text data.
+    Output:
+    A plot displaying wordcloud.
+
+    Reference:
+    https://github.com/amueller/word_cloud
+    &#34;&#34;&#34;
+    alltext = &#39;,&#39;.join(list(text.values))
+    wordcloud = WordCloud(background_color=&#39;white&#39;,
+                          max_words=500, contour_color=&#39;steelblue&#39;)
+    wordcloud.generate(alltext)
+    return wordcloud.to_image()
+
+
+def Tokenize(text):
+    &#34;&#34;&#34;
+    Break text into tokens.
+
+    Input: 
+    text -- list of text data.
+    Output: 
+    tokens.
+    &#34;&#34;&#34;
+    parser = English()
+    tokens = parser(text)
+    thetokens = []
+    for token in tokens:
+        if token.orth_.isspace():
+            continue
+        elif token.like_url:
+            thetokens.append(&#39;URL&#39;)
+        elif token.orth_.startswith(&#39;@&#39;):
+            thetokens.append(&#39;SCREEN_NAME&#39;)
+        else:
+            thetokens.append(token.lower_)
+    return thetokens
+
+
+def GetLemma(word):
+    &#34;&#34;&#34;
+    Get the semantic root of a given word.
+
+    Input:
+    word -- a string.
+    Output:
+    the root of the word.
+    &#34;&#34;&#34;
+    lemma = WordNetLemmatizer().lemmatize(word)
+    return lemma
+
+
+def ProcessToken(sentence):
+    &#34;&#34;&#34;
+    Tokenize, remove stopwords, and get lemma of a given sentence.
+
+    Input: 
+    sentence -- a string.
+    Output: 
+    cleaned tokens.
+    &#34;&#34;&#34;
+    en_stop = set(nltk.corpus.stopwords.words(&#34;english&#34;))
+    tokens = Tokenize(sentence)
+    clean_tokens = []
+    for token in tokens:
+        if token not in en_stop:
+            clean_tokens.append(GetLemma(token))
+    return clean_tokens
+
+
+def Prepare(text):
+    &#34;&#34;&#34;
+    Prepare text for topic modelling.
+
+    Input:
+    text -- a list of text data.
+    Output: 
+    a list of text data ready for topic modelling.
+    &#34;&#34;&#34;
+    processedtext = []
+    for entry in text:
+        processedtext.append(ProcessToken(entry))
+    return processedtext
+
+
+def LDAtopic(text, n_topics=2, n_words=3):
+    &#34;&#34;&#34;
+    Find topics in text by Latent Dirichlet Allocation.
+
+    Input:
+    text -- list of text data; 
+    n_topics -- number of topics to generate;
+    n_words -- number of words to display in each topic.
+    Output:
+    topics found in text, fitted model, corpus, and dictionary.
+
+    Reference:
+    https://radimrehurek.com/gensim/models/ldamodel.html
+    &#34;&#34;&#34;
+    dictionary = corpora.Dictionary(text)
+    corpus = [dictionary.doc2bow(t) for t in text]
+    ldamodel = gensim.models.ldamodel.LdaModel(
+        corpus, num_topics=n_topics, id2word=dictionary, passes=15)
+    topics = ldamodel.print_topics(num_words=n_words)
+    return topics, ldamodel, corpus, dictionary
+
+
+def PlotLDA(model, corpus, dictionary):
+    &#34;&#34;&#34;
+    Visualize LDA topic model.
+
+    Input:
+    model -- a LDA topic model;
+    corpus -- the corpus for modelling;
+    dictionary -- the dictionary for modelling.
+    Output:
+    an interactive LDA model visualization.
+
+    Reference:
+    https://pypi.org/project/pyLDAvis/
+    &#34;&#34;&#34;
+    lda_display = pyLDAvis.gensim.prepare(
+        model, corpus, dictionary, sort_topics=False)
+    return pyLDAvis.display(lda_display)
+
+
+def WhichTopic(text, ldamodel, corpus):
+    &#34;&#34;&#34;
+    Find the most likely topic of text.
+
+    Input:
+    text -- list of text data;
+    ldamodel -- a LDA model built by LDATopic;
+    corpus -- a corpus built by LDATopic.
+    Output:
+    the most likely topic of each piece of text.
+    &#34;&#34;&#34;
+    topic = []
+    for i in range(len(text)):
+        topic_index, topic_value = max(
+            ldamodel[corpus[i]], key=lambda item: item[1])
+        topic.append(topic_index)
+    return topic
+
+
+def Sentiment(text):
+    &#34;&#34;&#34;
+    Detect the sentiment of text.
+
+    Input:
+    text -- list of text data;
+    Output:
+    sentiments decided by TextBlob.
+
+    Reference:
+    https://textblob.readthedocs.io/en/dev/
+    &#34;&#34;&#34;
+    sentiment = []
+    for i in range(len(text)):
+        analysis = TextBlob(text.iloc[i])
+        if analysis.sentiment.polarity &gt; 0:
+            sentiment.append(&#34;Positive&#34;)
+        elif analysis.sentiment.polarity == 0:
+            sentiment.append(&#34;Neutral&#34;)
+        else:
+            sentiment.append(&#34;Negative&#34;)
+    return sentiment
+
+
+def PlotSentiment(sentiment):
+    &#34;&#34;&#34;
+    Visualize percentages of sentiments.
+
+    Input:
+    sentiment -- a column with sentiments.
+    Output:
+    a pie plot of sentiments.
+    &#34;&#34;&#34;
+    plt.figure(figsize=[6, 6])
+    senticount = [list(sentiment).count(&#34;Positive&#34;),
+                  list(sentiment).count(&#34;Neutral&#34;),
+                  list(sentiment).count(&#34;Negative&#34;)]
+    sentilabel = [&#34;Positive&#34;, &#34;Neutural&#34;, &#34;Negative&#34;]
+    colors = [&#34;#5A8A91&#34;, &#34;#FBC800&#34;, &#34;#EF2648&#34;]
+    plt.pie(senticount, colors=colors, labels=sentilabel, autopct=&#39;%1.1f%%&#39;)
+    return</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="MangroveConservation.sentiment_analysis1.GetLemma"><code class="name flex">
+<span>def <span class="ident">GetLemma</span></span>(<span>word)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the semantic root of a given word.</p>
+<p>Input:
+word &ndash; a string.
+Output:
+the root of the word.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def GetLemma(word):
+    &#34;&#34;&#34;
+    Get the semantic root of a given word.
+
+    Input:
+    word -- a string.
+    Output:
+    the root of the word.
+    &#34;&#34;&#34;
+    lemma = WordNetLemmatizer().lemmatize(word)
+    return lemma</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.LDAtopic"><code class="name flex">
+<span>def <span class="ident">LDAtopic</span></span>(<span>text, n_topics=2, n_words=3)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Find topics in text by Latent Dirichlet Allocation.</p>
+<p>Input:
+text &ndash; list of text data;
+n_topics &ndash; number of topics to generate;
+n_words &ndash; number of words to display in each topic.
+Output:
+topics found in text, fitted model, corpus, and dictionary.</p>
+<p>Reference:
+<a href="https://radimrehurek.com/gensim/models/ldamodel.html">https://radimrehurek.com/gensim/models/ldamodel.html</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def LDAtopic(text, n_topics=2, n_words=3):
+    &#34;&#34;&#34;
+    Find topics in text by Latent Dirichlet Allocation.
+
+    Input:
+    text -- list of text data; 
+    n_topics -- number of topics to generate;
+    n_words -- number of words to display in each topic.
+    Output:
+    topics found in text, fitted model, corpus, and dictionary.
+
+    Reference:
+    https://radimrehurek.com/gensim/models/ldamodel.html
+    &#34;&#34;&#34;
+    dictionary = corpora.Dictionary(text)
+    corpus = [dictionary.doc2bow(t) for t in text]
+    ldamodel = gensim.models.ldamodel.LdaModel(
+        corpus, num_topics=n_topics, id2word=dictionary, passes=15)
+    topics = ldamodel.print_topics(num_words=n_words)
+    return topics, ldamodel, corpus, dictionary</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.PlotLDA"><code class="name flex">
+<span>def <span class="ident">PlotLDA</span></span>(<span>model, corpus, dictionary)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Visualize LDA topic model.</p>
+<p>Input:
+model &ndash; a LDA topic model;
+corpus &ndash; the corpus for modelling;
+dictionary &ndash; the dictionary for modelling.
+Output:
+an interactive LDA model visualization.</p>
+<p>Reference:
+<a href="https://pypi.org/project/pyLDAvis/">https://pypi.org/project/pyLDAvis/</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlotLDA(model, corpus, dictionary):
+    &#34;&#34;&#34;
+    Visualize LDA topic model.
+
+    Input:
+    model -- a LDA topic model;
+    corpus -- the corpus for modelling;
+    dictionary -- the dictionary for modelling.
+    Output:
+    an interactive LDA model visualization.
+
+    Reference:
+    https://pypi.org/project/pyLDAvis/
+    &#34;&#34;&#34;
+    lda_display = pyLDAvis.gensim.prepare(
+        model, corpus, dictionary, sort_topics=False)
+    return pyLDAvis.display(lda_display)</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.PlotSentiment"><code class="name flex">
+<span>def <span class="ident">PlotSentiment</span></span>(<span>sentiment)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Visualize percentages of sentiments.</p>
+<p>Input:
+sentiment &ndash; a column with sentiments.
+Output:
+a pie plot of sentiments.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlotSentiment(sentiment):
+    &#34;&#34;&#34;
+    Visualize percentages of sentiments.
+
+    Input:
+    sentiment -- a column with sentiments.
+    Output:
+    a pie plot of sentiments.
+    &#34;&#34;&#34;
+    plt.figure(figsize=[6, 6])
+    senticount = [list(sentiment).count(&#34;Positive&#34;),
+                  list(sentiment).count(&#34;Neutral&#34;),
+                  list(sentiment).count(&#34;Negative&#34;)]
+    sentilabel = [&#34;Positive&#34;, &#34;Neutural&#34;, &#34;Negative&#34;]
+    colors = [&#34;#5A8A91&#34;, &#34;#FBC800&#34;, &#34;#EF2648&#34;]
+    plt.pie(senticount, colors=colors, labels=sentilabel, autopct=&#39;%1.1f%%&#39;)
+    return</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.PlotTopWords"><code class="name flex">
+<span>def <span class="ident">PlotTopWords</span></span>(<span>text, n, ngram_min=1, ngram_max=1, remove_stop_words=True)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Plot distribution of top words in text.</p>
+<p>Input:
+text &ndash; list of text data;
+n &ndash; number of top words/n-grams to display;
+ngram_min &ndash; the minimum value of n-grams (default: 1);
+ngram_max &ndash; the maximum value of n-grams (default: 1);
+remove_stop_words &ndash; whether or not to remove stop words (default: True).
+Output:
+A plot displaying top n-grams in text.</p>
+<p>Reference:
+<a href="https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html">https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlotTopWords(text, n, ngram_min=1, ngram_max=1, remove_stop_words=True):
+    &#34;&#34;&#34;
+    Plot distribution of top words in text.
+
+    Input: 
+    text -- list of text data;
+    n -- number of top words/n-grams to display;
+    ngram_min -- the minimum value of n-grams (default: 1);
+    ngram_max -- the maximum value of n-grams (default: 1);
+    remove_stop_words -- whether or not to remove stop words (default: True). 
+    Output:
+    A plot displaying top n-grams in text.
+
+    Reference:
+    https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.CountVectorizer.html
+    &#34;&#34;&#34;
+    if remove_stop_words == True:
+        vec = CountVectorizer(ngram_range=(
+            ngram_min, ngram_max), stop_words=&#34;english&#34;).fit(text)
+        bag_of_words = vec.transform(text)
+        sum_words = bag_of_words.sum(axis=0)
+        words_freq = [(word, sum_words[0, idx])
+                      for word, idx in vec.vocabulary_.items()]
+        words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
+        df = pd.DataFrame(words_freq[:n], columns=[&#34;Topwords&#34;, &#34;Count&#34;])
+        fig, ax = plt.subplots()
+        ax.barh(df[&#34;Topwords&#34;], df[&#34;Count&#34;], color=&#34;teal&#34;)
+        ax.invert_yaxis()
+        ax.set_xlabel(&#34;Count&#34;)
+        ax.set_title(
+            &#34;Top {} words/ phrases after removing stop words&#34;.format(n))
+    if remove_stop_words == False:
+        vec = CountVectorizer(ngram_range=(
+            ngram_min, ngram_max), stop_words=None).fit(text)
+        bag_of_words = vec.transform(text)
+        sum_words = bag_of_words.sum(axis=0)
+        words_freq = [(word, sum_words[0, idx])
+                      for word, idx in vec.vocabulary_.items()]
+        words_freq = sorted(words_freq, key=lambda x: x[1], reverse=True)
+        df = pd.DataFrame(words_freq[:n], columns=[&#34;Topwords&#34;, &#34;Count&#34;])
+        fig, ax = plt.subplots()
+        ax.barh(df[&#34;Topwords&#34;], df[&#34;Count&#34;], color=&#34;teal&#34;)
+        ax.invert_yaxis()
+        ax.set_xlabel(&#34;Count&#34;)
+        ax.set_title(&#34;Top {} words/ phrases&#34;.format(n))
+    return ax</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.PlotWordCloud"><code class="name flex">
+<span>def <span class="ident">PlotWordCloud</span></span>(<span>text)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generate a wordcloud of text.</p>
+<p>Input:
+text &ndash; list of text data.
+Output:
+A plot displaying wordcloud.</p>
+<p>Reference:
+<a href="https://github.com/amueller/word_cloud">https://github.com/amueller/word_cloud</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def PlotWordCloud(text):
+    &#34;&#34;&#34;
+    Generate a wordcloud of text.
+
+    Input:
+    text -- list of text data.
+    Output:
+    A plot displaying wordcloud.
+
+    Reference:
+    https://github.com/amueller/word_cloud
+    &#34;&#34;&#34;
+    alltext = &#39;,&#39;.join(list(text.values))
+    wordcloud = WordCloud(background_color=&#39;white&#39;,
+                          max_words=500, contour_color=&#39;steelblue&#39;)
+    wordcloud.generate(alltext)
+    return wordcloud.to_image()</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.Prepare"><code class="name flex">
+<span>def <span class="ident">Prepare</span></span>(<span>text)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Prepare text for topic modelling.</p>
+<p>Input:
+text &ndash; a list of text data.
+Output:
+a list of text data ready for topic modelling.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Prepare(text):
+    &#34;&#34;&#34;
+    Prepare text for topic modelling.
+
+    Input:
+    text -- a list of text data.
+    Output: 
+    a list of text data ready for topic modelling.
+    &#34;&#34;&#34;
+    processedtext = []
+    for entry in text:
+        processedtext.append(ProcessToken(entry))
+    return processedtext</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.ProcessToken"><code class="name flex">
+<span>def <span class="ident">ProcessToken</span></span>(<span>sentence)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Tokenize, remove stopwords, and get lemma of a given sentence.</p>
+<p>Input:
+sentence &ndash; a string.
+Output:
+cleaned tokens.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def ProcessToken(sentence):
+    &#34;&#34;&#34;
+    Tokenize, remove stopwords, and get lemma of a given sentence.
+
+    Input: 
+    sentence -- a string.
+    Output: 
+    cleaned tokens.
+    &#34;&#34;&#34;
+    en_stop = set(nltk.corpus.stopwords.words(&#34;english&#34;))
+    tokens = Tokenize(sentence)
+    clean_tokens = []
+    for token in tokens:
+        if token not in en_stop:
+            clean_tokens.append(GetLemma(token))
+    return clean_tokens</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.Sentiment"><code class="name flex">
+<span>def <span class="ident">Sentiment</span></span>(<span>text)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Detect the sentiment of text.</p>
+<p>Input:
+text &ndash; list of text data;
+Output:
+sentiments decided by TextBlob.</p>
+<p>Reference:
+<a href="https://textblob.readthedocs.io/en/dev/">https://textblob.readthedocs.io/en/dev/</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Sentiment(text):
+    &#34;&#34;&#34;
+    Detect the sentiment of text.
+
+    Input:
+    text -- list of text data;
+    Output:
+    sentiments decided by TextBlob.
+
+    Reference:
+    https://textblob.readthedocs.io/en/dev/
+    &#34;&#34;&#34;
+    sentiment = []
+    for i in range(len(text)):
+        analysis = TextBlob(text.iloc[i])
+        if analysis.sentiment.polarity &gt; 0:
+            sentiment.append(&#34;Positive&#34;)
+        elif analysis.sentiment.polarity == 0:
+            sentiment.append(&#34;Neutral&#34;)
+        else:
+            sentiment.append(&#34;Negative&#34;)
+    return sentiment</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.Tokenize"><code class="name flex">
+<span>def <span class="ident">Tokenize</span></span>(<span>text)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Break text into tokens.</p>
+<p>Input:
+text &ndash; list of text data.
+Output:
+tokens.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def Tokenize(text):
+    &#34;&#34;&#34;
+    Break text into tokens.
+
+    Input: 
+    text -- list of text data.
+    Output: 
+    tokens.
+    &#34;&#34;&#34;
+    parser = English()
+    tokens = parser(text)
+    thetokens = []
+    for token in tokens:
+        if token.orth_.isspace():
+            continue
+        elif token.like_url:
+            thetokens.append(&#39;URL&#39;)
+        elif token.orth_.startswith(&#39;@&#39;):
+            thetokens.append(&#39;SCREEN_NAME&#39;)
+        else:
+            thetokens.append(token.lower_)
+    return thetokens</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.sentiment_analysis1.WhichTopic"><code class="name flex">
+<span>def <span class="ident">WhichTopic</span></span>(<span>text, ldamodel, corpus)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Find the most likely topic of text.</p>
+<p>Input:
+text &ndash; list of text data;
+ldamodel &ndash; a LDA model built by LDATopic;
+corpus &ndash; a corpus built by LDATopic.
+Output:
+the most likely topic of each piece of text.</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def WhichTopic(text, ldamodel, corpus):
+    &#34;&#34;&#34;
+    Find the most likely topic of text.
+
+    Input:
+    text -- list of text data;
+    ldamodel -- a LDA model built by LDATopic;
+    corpus -- a corpus built by LDATopic.
+    Output:
+    the most likely topic of each piece of text.
+    &#34;&#34;&#34;
+    topic = []
+    for i in range(len(text)):
+        topic_index, topic_value = max(
+            ldamodel[corpus[i]], key=lambda item: item[1])
+        topic.append(topic_index)
+    return topic</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="MangroveConservation" href="index.html">MangroveConservation</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="two-column">
+<li><code><a title="MangroveConservation.sentiment_analysis1.GetLemma" href="#MangroveConservation.sentiment_analysis1.GetLemma">GetLemma</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.LDAtopic" href="#MangroveConservation.sentiment_analysis1.LDAtopic">LDAtopic</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.PlotLDA" href="#MangroveConservation.sentiment_analysis1.PlotLDA">PlotLDA</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.PlotSentiment" href="#MangroveConservation.sentiment_analysis1.PlotSentiment">PlotSentiment</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.PlotTopWords" href="#MangroveConservation.sentiment_analysis1.PlotTopWords">PlotTopWords</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.PlotWordCloud" href="#MangroveConservation.sentiment_analysis1.PlotWordCloud">PlotWordCloud</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.Prepare" href="#MangroveConservation.sentiment_analysis1.Prepare">Prepare</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.ProcessToken" href="#MangroveConservation.sentiment_analysis1.ProcessToken">ProcessToken</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.Sentiment" href="#MangroveConservation.sentiment_analysis1.Sentiment">Sentiment</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.Tokenize" href="#MangroveConservation.sentiment_analysis1.Tokenize">Tokenize</a></code></li>
+<li><code><a title="MangroveConservation.sentiment_analysis1.WhichTopic" href="#MangroveConservation.sentiment_analysis1.WhichTopic">WhichTopic</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

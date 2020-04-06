@@ -23,7 +23,7 @@ init:
 	conda env create --prefix ./envs --file environment.yml
 
 doc:
-	pdoc --force --html --output-dir ./docs $(MODULENAME)
+	pdoc3 --force --html --output-dir ./docs $(MODULENAME)
 
 lint:
 	pylint $(MODULENAME)

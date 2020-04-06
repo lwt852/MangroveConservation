@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.7.2" />
+<title>MangroveConservation.get_twitter_data1 API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>MangroveConservation.get_twitter_data1</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python"># Collecting Twitter historical data using TwitterAPI
+
+import json_lines
+import pandas as pd
+import yaml
+import json
+
+# Script prints an update to the CLI every time it collected another X Tweets
+PRINT_AFTER_X = 1000
+
+
+def get_data(SEARCH_QUERY, DEV_ENVIRONMENT_LABEL, API_SCOPE, API_KEY, API_SECRET_KEY, TO_DATE, FROM_DATE, FILENAME):
+    &#34;&#34;&#34; get twitter data through twitter API from full archive search sand box and return all twitters in JSONL file
+    based on 
+     search term, 
+     the geographic location of interest
+     the time period of interest.
+     and personal twitter account information.
+
+     Reference: https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI
+     Reference: https://developer.twitter.com/en/docs/tweets/search/overview
+    &#34;&#34;&#34;
+
+    config = dict(
+        search_tweets_api=dict(
+            account_type=&#39;premium&#39;,
+            endpoint=f&#34;https://api.twitter.com/1.1/tweets/search/{API_SCOPE}/{DEV_ENVIRONMENT_LABEL}.json&#34;,
+            consumer_key=API_KEY,
+            consumer_secret=API_SECRET_KEY
+        )
+    )
+
+    with open(&#39;twitter_keys.yaml&#39;, &#39;w&#39;) as config_file:
+        yaml.dump(config, config_file, default_flow_style=False)
+
+    from searchtweets import load_credentials, gen_rule_payload, ResultStream
+
+    premium_search_args = load_credentials(&#34;twitter_keys.yaml&#34;,
+                                           yaml_key=&#34;search_tweets_api&#34;,
+                                           env_overwrite=False)
+
+    rule = gen_rule_payload(SEARCH_QUERY,
+                            results_per_call=100,
+                            from_date=FROM_DATE,
+                            to_date=TO_DATE
+                            )
+
+    rs = ResultStream(rule_payload=rule,
+                      max_results=100000,
+                      **premium_search_args)
+
+    with open(FILENAME, &#39;a&#39;, encoding=&#39;utf-8&#39;) as f:
+        n = 0
+        for tweet in rs.stream():
+            n += 1
+            if n % PRINT_AFTER_X == 0:
+                print(&#39;{0}: {1}&#39;.format(str(n), tweet[&#39;created_at&#39;]))
+            json.dump(tweet, f)
+            f.write(&#39;\n&#39;)
+    print(&#39;done&#39;)
+
+
+def load_jsonl(file):
+    &#34;&#34;&#34;explore the jsonl file and only pick up the indicators of interests from all twitter data, such as
+
+    user related indicators: 
+    ID:twitter ID
+    username:twitter user name
+    user_joined: the year when user created an twitter account
+    user_bio: the description of user
+    follower_count: the numbers of followers of the user
+
+    tweets related indicators:
+    text: the full text of what user has twitted related to search term
+    place: where user send out the tweet.
+
+   user network related indicators:
+   retweeted_user: whether the tweet is retweeted from someone else&#39;s original tweet
+   and information related to the retweeted user.
+    reference: https://lucahammer.com/2019/11/05/creating-a-retweet-network-for-gephi-from-a-local-file-with-python/
+    &#34;&#34;&#34;
+    tweets = []
+    with open(file, &#39;rb&#39;) as f:
+        for tweet in json_lines.reader(f, broken=True):
+            reduced_tweet = {
+                &#39;created_at&#39;: tweet[&#39;created_at&#39;],
+                &#39;id&#39;: tweet[&#39;id_str&#39;],
+                &#39;username&#39;: tweet[&#39;user&#39;][&#39;name&#39;],
+                &#39;user_joined&#39;: tweet[&#39;user&#39;][&#39;created_at&#39;][-4:],
+                &#39;user_location&#39;: tweet[&#39;user&#39;][&#39;location&#39;],
+                &#39;user_bio&#39;: tweet[&#39;user&#39;][&#39;description&#39;],
+                &#39;follower_count&#39;: tweet[&#39;user&#39;][&#39;followers_count&#39;]
+            }
+
+            if &#39;extended_tweet&#39; in tweet:
+                reduced_tweet[&#39;text&#39;] = tweet[&#39;extended_tweet&#39;][&#39;full_text&#39;]
+
+            else:
+                reduced_tweet[&#39;text&#39;] = tweet[&#39;text&#39;]
+
+            if tweet[&#39;place&#39;] is not None:
+                reduced_tweet[&#39;country_code&#39;] = tweet[&#39;place&#39;][&#39;country_code&#39;],
+                reduced_tweet[&#39;place&#39;] = tweet[&#39;place&#39;][&#39;full_name&#39;]
+
+            if &#39;retweeted_status&#39; in tweet:
+                reduced_tweet[&#39;retweeted_user&#39;] = {
+                    &#39;user_id&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;id_str&#39;],
+                    &#39;username&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;screen_name&#39;],
+                    &#39;user_joined&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;created_at&#39;][-4:],
+                    &#39;user_location&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;location&#39;],
+                    &#39;user_bio&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;description&#39;],
+                    &#39;follower_count&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;followers_count&#39;]
+                }
+
+            tweets.append(reduced_tweet)
+
+    return (tweets)
+
+
+def create_csv(tweets, filename):
+    &#34;&#34;&#34;
+    turn the selected information from jsonl file into formated CSV file.
+    every record is one row
+    &#34;&#34;&#34;
+    index = [&#39;created_at&#39;, &#39;follower_count&#39;, &#39;id&#39;, &#39;text&#39;,
+             &#39;user_bio&#39;, &#39;user_joined&#39;, &#39;user_location&#39;, &#39;username&#39;]
+    results = pd.DataFrame(columns=index)
+
+    for tweet in tweets:
+        temp = pd.DataFrame({index[i]: tweet[index[i]]
+                             for i in range(len(index))}, index=[0])
+        results = results.append(temp, ignore_index=True)
+    results.to_csv(filename, index=False, header=True)
+    return results</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="MangroveConservation.get_twitter_data1.create_csv"><code class="name flex">
+<span>def <span class="ident">create_csv</span></span>(<span>tweets, filename)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>turn the selected information from jsonl file into formated CSV file.
+every record is one row</p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_csv(tweets, filename):
+    &#34;&#34;&#34;
+    turn the selected information from jsonl file into formated CSV file.
+    every record is one row
+    &#34;&#34;&#34;
+    index = [&#39;created_at&#39;, &#39;follower_count&#39;, &#39;id&#39;, &#39;text&#39;,
+             &#39;user_bio&#39;, &#39;user_joined&#39;, &#39;user_location&#39;, &#39;username&#39;]
+    results = pd.DataFrame(columns=index)
+
+    for tweet in tweets:
+        temp = pd.DataFrame({index[i]: tweet[index[i]]
+                             for i in range(len(index))}, index=[0])
+        results = results.append(temp, ignore_index=True)
+    results.to_csv(filename, index=False, header=True)
+    return results</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.get_twitter_data1.get_data"><code class="name flex">
+<span>def <span class="ident">get_data</span></span>(<span>SEARCH_QUERY, DEV_ENVIRONMENT_LABEL, API_SCOPE, API_KEY, API_SECRET_KEY, TO_DATE, FROM_DATE, FILENAME)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>get twitter data through twitter API from full archive search sand box and return all twitters in JSONL file
+based on
+search term,
+the geographic location of interest
+the time period of interest.
+and personal twitter account information.</p>
+<p>Reference: <a href="https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI">https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI</a>
+Reference: <a href="https://developer.twitter.com/en/docs/tweets/search/overview">https://developer.twitter.com/en/docs/tweets/search/overview</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_data(SEARCH_QUERY, DEV_ENVIRONMENT_LABEL, API_SCOPE, API_KEY, API_SECRET_KEY, TO_DATE, FROM_DATE, FILENAME):
+    &#34;&#34;&#34; get twitter data through twitter API from full archive search sand box and return all twitters in JSONL file
+    based on 
+     search term, 
+     the geographic location of interest
+     the time period of interest.
+     and personal twitter account information.
+
+     Reference: https://github.com/geduldig/TwitterAPI/tree/master/TwitterAPI
+     Reference: https://developer.twitter.com/en/docs/tweets/search/overview
+    &#34;&#34;&#34;
+
+    config = dict(
+        search_tweets_api=dict(
+            account_type=&#39;premium&#39;,
+            endpoint=f&#34;https://api.twitter.com/1.1/tweets/search/{API_SCOPE}/{DEV_ENVIRONMENT_LABEL}.json&#34;,
+            consumer_key=API_KEY,
+            consumer_secret=API_SECRET_KEY
+        )
+    )
+
+    with open(&#39;twitter_keys.yaml&#39;, &#39;w&#39;) as config_file:
+        yaml.dump(config, config_file, default_flow_style=False)
+
+    from searchtweets import load_credentials, gen_rule_payload, ResultStream
+
+    premium_search_args = load_credentials(&#34;twitter_keys.yaml&#34;,
+                                           yaml_key=&#34;search_tweets_api&#34;,
+                                           env_overwrite=False)
+
+    rule = gen_rule_payload(SEARCH_QUERY,
+                            results_per_call=100,
+                            from_date=FROM_DATE,
+                            to_date=TO_DATE
+                            )
+
+    rs = ResultStream(rule_payload=rule,
+                      max_results=100000,
+                      **premium_search_args)
+
+    with open(FILENAME, &#39;a&#39;, encoding=&#39;utf-8&#39;) as f:
+        n = 0
+        for tweet in rs.stream():
+            n += 1
+            if n % PRINT_AFTER_X == 0:
+                print(&#39;{0}: {1}&#39;.format(str(n), tweet[&#39;created_at&#39;]))
+            json.dump(tweet, f)
+            f.write(&#39;\n&#39;)
+    print(&#39;done&#39;)</code></pre>
+</details>
+</dd>
+<dt id="MangroveConservation.get_twitter_data1.load_jsonl"><code class="name flex">
+<span>def <span class="ident">load_jsonl</span></span>(<span>file)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>explore the jsonl file and only pick up the indicators of interests from all twitter data, such as</p>
+<p>user related indicators:
+ID:twitter ID
+username:twitter user name
+user_joined: the year when user created an twitter account
+user_bio: the description of user
+follower_count: the numbers of followers of the user</p>
+<p>tweets related indicators:
+text: the full text of what user has twitted related to search term
+place: where user send out the tweet.</p>
+<p>user network related indicators:
+retweeted_user: whether the tweet is retweeted from someone else's original tweet
+and information related to the retweeted user.
+reference: <a href="https://lucahammer.com/2019/11/05/creating-a-retweet-network-for-gephi-from-a-local-file-with-python/">https://lucahammer.com/2019/11/05/creating-a-retweet-network-for-gephi-from-a-local-file-with-python/</a></p></section>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def load_jsonl(file):
+    &#34;&#34;&#34;explore the jsonl file and only pick up the indicators of interests from all twitter data, such as
+
+    user related indicators: 
+    ID:twitter ID
+    username:twitter user name
+    user_joined: the year when user created an twitter account
+    user_bio: the description of user
+    follower_count: the numbers of followers of the user
+
+    tweets related indicators:
+    text: the full text of what user has twitted related to search term
+    place: where user send out the tweet.
+
+   user network related indicators:
+   retweeted_user: whether the tweet is retweeted from someone else&#39;s original tweet
+   and information related to the retweeted user.
+    reference: https://lucahammer.com/2019/11/05/creating-a-retweet-network-for-gephi-from-a-local-file-with-python/
+    &#34;&#34;&#34;
+    tweets = []
+    with open(file, &#39;rb&#39;) as f:
+        for tweet in json_lines.reader(f, broken=True):
+            reduced_tweet = {
+                &#39;created_at&#39;: tweet[&#39;created_at&#39;],
+                &#39;id&#39;: tweet[&#39;id_str&#39;],
+                &#39;username&#39;: tweet[&#39;user&#39;][&#39;name&#39;],
+                &#39;user_joined&#39;: tweet[&#39;user&#39;][&#39;created_at&#39;][-4:],
+                &#39;user_location&#39;: tweet[&#39;user&#39;][&#39;location&#39;],
+                &#39;user_bio&#39;: tweet[&#39;user&#39;][&#39;description&#39;],
+                &#39;follower_count&#39;: tweet[&#39;user&#39;][&#39;followers_count&#39;]
+            }
+
+            if &#39;extended_tweet&#39; in tweet:
+                reduced_tweet[&#39;text&#39;] = tweet[&#39;extended_tweet&#39;][&#39;full_text&#39;]
+
+            else:
+                reduced_tweet[&#39;text&#39;] = tweet[&#39;text&#39;]
+
+            if tweet[&#39;place&#39;] is not None:
+                reduced_tweet[&#39;country_code&#39;] = tweet[&#39;place&#39;][&#39;country_code&#39;],
+                reduced_tweet[&#39;place&#39;] = tweet[&#39;place&#39;][&#39;full_name&#39;]
+
+            if &#39;retweeted_status&#39; in tweet:
+                reduced_tweet[&#39;retweeted_user&#39;] = {
+                    &#39;user_id&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;id_str&#39;],
+                    &#39;username&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;screen_name&#39;],
+                    &#39;user_joined&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;created_at&#39;][-4:],
+                    &#39;user_location&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;location&#39;],
+                    &#39;user_bio&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;description&#39;],
+                    &#39;follower_count&#39;: tweet[&#39;retweeted_status&#39;][&#39;user&#39;][&#39;followers_count&#39;]
+                }
+
+            tweets.append(reduced_tweet)
+
+    return (tweets)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="MangroveConservation" href="index.html">MangroveConservation</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="MangroveConservation.get_twitter_data1.create_csv" href="#MangroveConservation.get_twitter_data1.create_csv">create_csv</a></code></li>
+<li><code><a title="MangroveConservation.get_twitter_data1.get_data" href="#MangroveConservation.get_twitter_data1.get_data">get_data</a></code></li>
+<li><code><a title="MangroveConservation.get_twitter_data1.load_jsonl" href="#MangroveConservation.get_twitter_data1.load_jsonl">load_jsonl</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.7.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
