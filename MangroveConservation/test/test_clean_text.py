@@ -1,4 +1,4 @@
-import MangroveConservation.clean_text1 as clean_txt
+from MangroveConservation import clean_text1 as clean_txt
 import pytest
 import datetime
 

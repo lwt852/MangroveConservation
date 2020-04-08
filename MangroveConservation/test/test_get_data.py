@@ -1,7 +1,7 @@
 
 import pytest
 import numpy as np 
-import get_twitter_data1 as get_data
+from MangroveConservation import get_twitter_data1 as get_data
 
 
 
