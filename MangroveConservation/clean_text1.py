@@ -25,10 +25,8 @@ def ImportComment(file, text_column):
     a Pandas dataframe.
     """
     raw = pd.read_csv(file, encoding="ISO-8859-1")
-    # remove the rows where texts are missing
-    df = raw[~raw[text_column].isnull()]
-    # remove the rows containing illegible words or N/A
-    df = df[df[text_column].str.contains("illegible|Illegible|N/A") == False]
+    df = raw[~raw[text_column].isnull()] # remove the rows where texts are missing
+    df = df[df[text_column].str.contains("illegible|Illegible|N/A|NA|(no comment)") == False]
     return df
 
 
@@ -48,25 +46,25 @@ def CommentCleaner(dirty_text):
         text = text.replace('(&gt)', '')  # remove ">"
         text = text.replace('(&lt)', '')  # remove "<"
         text = text.replace('nan', '')  # remove NA
-#        text = text.replace('mangrove forest','')  # remove the search term
-        # remove non-breaking space in ISO 8859-1
-        clean_text = text.replace('(\xa0)', "")
-    return clean_text
-
-
-def TweetCleaner(dirty_text):
-    """
-    Remove links and special characters from a tweet.
-
-    Input:
-    dirty_text -- a raw tweet.
-    Output:
-    a clean tweet.
-    """
-    clean_text = " ".join(re.sub(
-        "(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", dirty_text).split())
-    return clean_text
-
+        semi_clean_text = " ".join(re.sub(r"(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)",
+                                      " ", dirty_text).split())
+        clean_text = " ".join(re.sub(r"\d+", "", semi_clean_text).split()) # remove numbers
+        return clean_text
+def find_centroid(row):
+    '''
+    Helper function to return the centroid of a polygonal bounding box of longitude, latitude coordinates
+    Reference: https://github.com/shawn-terryah/Twitter_Geolocation
+    '''
+    
+    try:
+        row_ = eval(row)
+        lst_of_coords = [item for sublist in row_ for item in sublist]
+        longitude = [p[0] for p in lst_of_coords]
+        latitude = [p[1] for p in lst_of_coords]
+        return (sum(latitude) / float(len(latitude)), sum(longitude) / float(len(longitude)))
+    except:
+        return None
+        
 
 def ImportTweet(file):
     """
@@ -77,14 +75,18 @@ def ImportTweet(file):
     Output: 
     a Pandas dataframe with clean time (in UTC), location (latitude and longitude), and text.
     """
-    raw = pd.read_csv(file, header=None)
-    raw.columns = ['created_at', 'follower_count', 'id', 'text',
-                   'user_bio', 'user_joined', 'user_location', 'username']
+    raw = pd.read_csv(file, header=0)
+    raw.columns = ['created_at', 'id', 'username', 'user_joined', 'user_location',
+       'user_bio', 'follower_count', 'text', 'country_code', 'place',
+       'coordinates']
+    
+    #set the centroid of the bounding box of coordinates
+    raw['centroid'] = list(map(lambda row: find_centroid(row), raw['coordinates']))
     # convert time format to UTC
     time = []
     for i in raw["created_at"]:
-        time.append(datetime.strptime(i, '%a %b %d %H:%M:%S %z %Y').replace(
-            tzinfo=timezone.utc).astimezone(tz=None).strftime('%Y-%m-%d %H:%M:%S'))
+        time.append(datetime.strptime(str(i), '%a %b %d %H:%M:%S %z %Y').
+                    replace(tzinfo=timezone.utc).astimezone(tz=None).strftime('%Y-%m-%d %H:%M:%S'))
     raw.insert(0, "time", time)
     raw["time"] = pd.to_datetime(raw["time"], utc=True)
     raw2 = raw.drop(columns="created_at")
@@ -92,24 +94,40 @@ def ImportTweet(file):
     # clean text
     cleantweet = []
     for i in raw2["text"]:
-        temp = CommentCleaner(i)
-        cleantweet.append(TweetCleaner(temp))
+        cleantweet.append(CommentCleaner(str(i)))
     raw2.insert(3, "tweet", cleantweet)
     raw3 = raw2.drop(columns="text")
 
     # clean user_bio
     cleantweet1 = []
     for i in raw3["user_bio"]:
-        i = CommentCleaner(str(i))
-        cleantweet1.append(TweetCleaner(i))
+        cleantweet1.append(CommentCleaner(str(i)))
     raw3.insert(3, "user_description", cleantweet1)
     raw4 = raw3.drop(columns="user_bio")
 
     # clean username
     cleantweet2 = []
     for i in raw4["username"]:
-        i = CommentCleaner(str(i))
-        cleantweet2.append(TweetCleaner(i))
+        cleantweet2.append(CommentCleaner(str(i)))
     raw4.insert(3, "name", cleantweet2)
-    df = raw4.drop(columns="username")
+    raw5 = raw4.drop(columns="username")
+    
+    #clean coordinates
+    long = []
+    lat = []
+    for i in range(len(raw5)):
+        num = re.findall(r"[-+]?[.]?[\d]+(?:,\d\d\d)*[\.]?\d*(?:[eE][-+]?\d+)?",
+                         str(raw5["centroid"].iloc[i]))
+        if len(num) == 0:
+            long.append(np.NaN)
+            lat.append(np.NaN)
+        else:
+            long.append(float(num[0]))
+            lat.append(float(num[1]))
+    raw5.insert(2, "long", long)
+    raw5.insert(2, "lat", lat)
+#    raw6 = raw5.drop(columns="coordinates")
+    df = raw5.drop(columns= "centroid")
+    
+    
     return df

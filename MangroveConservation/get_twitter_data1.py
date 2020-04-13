@@ -101,6 +101,7 @@ def load_jsonl(file):
             if tweet['place'] is not None:
                 reduced_tweet['country_code'] = tweet['place']['country_code'],
                 reduced_tweet['place'] = tweet['place']['full_name']
+                reduced_tweet['coordinates']=tweet['place']['bounding_box']['coordinates']
 
             if 'retweeted_status' in tweet:
                 reduced_tweet['retweeted_user'] = {
@@ -122,13 +123,6 @@ def create_csv(tweets, filename):
     turn the selected information from jsonl file into formated CSV file.
     every record is one row
     """
-    index = ['created_at', 'follower_count', 'id', 'text',
-             'user_bio', 'user_joined', 'user_location', 'username']
-    results = pd.DataFrame(columns=index)
-
-    for tweet in tweets:
-        temp = pd.DataFrame({index[i]: tweet[index[i]]
-                             for i in range(len(index))}, index=[0])
-        results = results.append(temp, ignore_index=True)
+    results=pd.DataFrame.from_dict(tweets)
     results.to_csv(filename, index=False, header=True)
     return results
