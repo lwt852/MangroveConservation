@@ -19,6 +19,7 @@ import gensim
 from gensim import corpora
 import pyLDAvis.gensim
 from textblob import TextBlob
+
 nltk.download("stopwords")
 nltk.download("wordnet")
 
@@ -123,8 +124,11 @@ def GetLemma(word):
     Output:
     the root of the word.
     """
-    lemma = WordNetLemmatizer().lemmatize(word)
-    return lemma
+    lemma = wn.morphy(word)
+    if lemma is None:
+        return word
+    else:
+        return lemma
 
 
 def ProcessToken(sentence):
@@ -142,6 +146,7 @@ def ProcessToken(sentence):
     for token in tokens:
         if token not in en_stop:
             clean_tokens.append(GetLemma(token))
+
     return clean_tokens
 
 

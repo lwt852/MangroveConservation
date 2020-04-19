@@ -28,5 +28,7 @@ setup(
         'pdoc3',
         'autopep8',
         'pytest',
-        'pip'
+        'pip',
+        'geopandas',
+        'shapely'
     ])
